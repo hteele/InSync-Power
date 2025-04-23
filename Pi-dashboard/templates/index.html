@@ -9,23 +9,28 @@
       href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    
   </head>
   <body>
-   
-        <div class="graph-box">
-          <div class="history-charts">
-            <div id="myGraph"></div> <!-- Graph Container -->
-            <!-- <div id="myGraph2"></div> -- Output wave graph -->
-          </div>
-          <div class="history-charts">
-            <div id="myGraph2"></div> <!-- Second Graph -->
-          </div>
+    <div class="graph-box">
+      <div class="history-charts">
+        <div id="myGraph">
+          <img id="plot" src="" alt="Live waveform" style="width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;" />
         </div>
-      
+      </div>
+      <div class="history-charts">
+        <div id="myGraph2"></div> <!-- Second Graph (optional) -->
+      </div>
+    </div>
+
+    <script>
+      const socket = io();
+      socket.on('update_plot', data => {
+        document.getElementById('plot').src = 'data:image/png;base64,' + data.image;
+      });
+    </script>
+
     <script src="{{ url_for('static', filename='main.js') }}" defer></script>
   </body>
 </html>
